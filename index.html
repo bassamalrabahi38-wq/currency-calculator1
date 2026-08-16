@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="حاسبة تحويل العملات - أداة سريعة ومجانية لحساب تحويلات الأموال بناءً على سعر الصرف الذي تدخله. متوافقة تماماً مع الهواتف الذكية.">
+    <title>حاسبة تحويل العملات</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px 15px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+            outline: none;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--primary-color);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            touch-action: manipulation;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .result-box {
+            margin-top: 24px;
+            padding: 16px;
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .result-box.show {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .result-title {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .result-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .disclaimer {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        .ad-space {
+            background-color: #f9fafb;
+            border: 2px dashed #d1d5db;
+            border-radius: 12px;
+            padding: 40px 20px;
+            text-align: center;
+            color: #9ca3af;
+            font-weight: bold;
+            margin: 30px 0;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 16px;
+            border-bottom: 2px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .steps-list {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 24px;
+        }
+
+        .steps-list li {
+            position: relative;
+            padding-right: 32px;
+            margin-bottom: 12px;
+        }
+
+        .steps-list li::before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .faq-item {
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-q {
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: var(--primary-color);
+        }
+
+        .faq-a {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>حاسبة تحويل العملات</h1>
+            <p>أداة سريعة وسهلة لحساب القيمة بعد التحويل</p>
+        </header>
+
+        <main>
+            <div class="card">
+                <div class="form-group">
+                    <label for="amount">المبلغ المراد تحويله:</label>
+                    <input type="number" id="amount" placeholder="مثال: 100" min="0" step="any" inputmode="decimal">
+                </div>
+
+                <div class="form-group">
+                    <label for="rate">سعر الصرف الحالي:</label>
+                    <input type="number" id="rate" placeholder="مثال: 3.75" min="0" step="any" inputmode="decimal">
+                </div>
+
+                <button onclick="calculateCurrency()">احسب النتيجة</button>
+
+                <div class="result-box" id="resultBox">
+                    <div class="result-title">النتيجة التقديرية:</div>
+                    <div class="result-value" id="finalResult">0.00</div>
+                </div>
+
+                <p class="disclaimer">
+                    ملاحظة: تقوم هذه الحاسبة بالعملية الحسابية بناءً على سعر الصرف الذي تدخله يدوياً. النتائج هي لأغراض تقديرية فقط.
+                </p>
+            </div>
+
+            <div class="ad-space">
+                مساحة إعلانية
+                <!-- ضع كود إعلان HilltopAds هنا -->
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">كيفية الاستخدام</h2>
+                <ul class="steps-list">
+                    <li>أدخل المبلغ الذي ترغب في تحويله في الخانة الأولى.</li>
+                    <li>أدخل سعر الصرف (قيمة العملة مقابل العملة الأخرى) في الخانة الثانية.</li>
+                    <li>اضغط على زر "احسب النتيجة" لتظهر لك القيمة النهائية فوراً.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h2 class="section-title">الأسئلة الشائعة (FAQ)</h2>
+                
+                <div class="faq-item">
+                    <div class="faq-q">هل أحتاج إلى إنترنت لاستخدام الحاسبة؟</div>
+                    <div class="faq-a">لا، بمجرد تحميل هذه الصفحة، تعمل الحاسبة بالكامل على جهازك دون الحاجة لأي اتصال بالإنترنت.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">من أين أحصل على سعر الصرف الدقيق؟</div>
+                    <div class="faq-a">يمكنك معرفة السعر الفعلي من البنك الذي تتعامل معه، أو من شركات الصرافة المعتمدة في منطقتك قبل إتمام عملية التحويل.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">هل هذه النتائج دقيقة 100%؟</div>
+                    <div class="faq-a">النتيجة دقيقة رياضياً بناءً على الأرقام المدخلة، لكنها تعتبر تقديرية في الواقع لأن أسعار الصرف قد تتغير في أي لحظة أو تختلف حسب عمولات الصرافة.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-q">هل يتم حفظ بياناتي أو أرقامي؟</div>
+                    <div class="faq-a">إطلاقاً. تتم جميع العمليات الحسابية محلياً داخل متصفحك ولا نقوم بتخزين أو إرسال أي بيانات أو أرقام لأي جهة.</div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 حاسبة العملات. جميع الحقوق محفوظة.</p>
+        </footer>
+    </div>
+
+    <script>
+        function calculateCurrency() {
+            // الحصول على القيم من الحقول
+            const amountInput = document.getElementById('amount').value;
+            const rateInput = document.getElementById('rate').value;
+            const resultBox = document.getElementById('resultBox');
+            const finalResult = document.getElementById('finalResult');
+
+            // تحويل القيم إلى أرقام عشرية
+            const amount = parseFloat(amountInput);
+            const rate = parseFloat(rateInput);
+
+            // التحقق من صحة المدخلات
+            if (isNaN(amount) || isNaN(rate) || amount <= 0 || rate <= 0) {
+                alert("يرجى إدخال أرقام صحيحة وموجبة في كلا الخانتين.");
+                resultBox.classList.remove('show');
+                return;
+            }
+
+            // العملية الحسابية
+            const result = amount * rate;
+
+            // تنسيق النتيجة لإظهار فاصلتين عشريتين فقط وتسهيل قراءة الأرقام الكبيرة
+            const formattedResult = new Intl.NumberFormat('ar-EG', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(result);
+
+            // عرض النتيجة
+            finalResult.textContent = formattedResult;
+            resultBox.classList.add('show');
+        }
+    </script>
+</body>
+  </html>
+                  
